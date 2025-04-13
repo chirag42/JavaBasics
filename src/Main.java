@@ -1,7 +1,7 @@
 class B implements Runnable {
     @Override
     public void run() {
-        System.out.println(Thread.currentThread().getName() + " CN here");
+        System.out.println(Thread.currentThread().getName() + " CN was here");
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
