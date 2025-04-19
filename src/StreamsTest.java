@@ -1,7 +1,4 @@
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StreamsTest {
@@ -68,6 +65,58 @@ public class StreamsTest {
         Map<Boolean, List<Employee>> partitionBySalary = employees.stream().collect(Collectors.partitioningBy(e -> e.salary > 15));
         System.out.println(partitionBySalary);
         System.out.println("----------------------------");
+
+        // Find all employees whose name starts with "D".
+        System.out.println("Find all employees whose name starts with 'D' - ");
+        employees.stream().filter(e -> e.name.startsWith("D")).forEach(System.out::println);
+        System.out.println("----------------------------");
+
+        //Get a list of distinct departments.
+        System.out.println("Get a list of distinct departments (List) - ");
+        List<String> deptList = employees.stream()
+                .map(e -> e.department)
+                .distinct()
+                .collect(Collectors.toList());
+        System.out.println(deptList);
+        System.out.println("----------------------------");
+
+        //Concatenate all employee names into a single string, separated by commas.
+        System.out.println("Concatenate all employee names into a single string, separated by commas - ");
+        String allEmployees = employees.stream().map(e -> e.name).collect(Collectors.joining(", "));
+        System.out.println(allEmployees);
+        System.out.println("----------------------------");
+
+        // Find the employee with the maximum salary.
+        System.out.println("Find the employee with the maximum salary - ");
+        Employee employeeWithMaxIncome = employees.stream().max(Comparator.comparingDouble(e -> e.salary)).orElse(null);
+        System.out.println(employeeWithMaxIncome);
+        System.out.println("----------------------------");
+
+        // Group employees by the first character of their name
+        System.out.println("Group employees by first character of name - ");
+        Map<Character, List<String>> groupEmployeesByFirstChar = employees.stream().
+                collect(Collectors.groupingBy(e -> e.name.charAt(0), Collectors.mapping(e -> e.name, Collectors.toList())));
+        System.out.println(groupEmployeesByFirstChar);
+        System.out.println("----------------------------");
+
+        // Find the total salary expense for all employees.
+        System.out.println("Find the total salary expense for all employees - ");
+        Double sumAllEmployeeSalary = employees.stream().mapToDouble(e -> e.salary ).sum();
+        System.out.println(sumAllEmployeeSalary);
+        System.out.println("----------------------------");
+
+        // Group employees by department, and get average salary in each location under that department.
+        System.out.println("Group employees by department, and get average salary in each location under that department - ");
+        Map<String,Map<String,Double>> mapAgg = employees.stream()
+                .collect(Collectors.groupingBy(e -> e.department,
+                        Collectors.groupingBy(e -> e.Location, Collectors.averagingDouble(e -> e.salary))));
+        System.out.println(mapAgg);
+        System.out.println("----------------------------");
+
+
+        //Partition employees based on whether they belong to the 'IT' department or not.
+        //
+        //Group employees by location, and within that, group by salary brackets (<15, >=15).
 
 
 
