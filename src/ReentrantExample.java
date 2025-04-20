@@ -8,7 +8,7 @@ public class ReentrantExample {
         if (counter > 1000) return;
         lock.lockInterruptibly();
         try {
-            System.out.println(Thread.currentThread().getName() + " Outer Method");
+            System.out.println(Thread.currentThread().getName() + " calling Outer Method");
             counter++;
             Thread.sleep(5000);
             innerMethod();
@@ -22,7 +22,7 @@ public class ReentrantExample {
         if (counter > 1000) return;
         lock.lockInterruptibly();
         try {
-            System.out.println(Thread.currentThread().getName() + " Inner Method");
+            System.out.println(Thread.currentThread().getName() + " calling Inner Method");
             counter++;
             Thread.sleep(5000);
             outerMethod();
