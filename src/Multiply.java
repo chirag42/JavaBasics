@@ -7,8 +7,9 @@ class Mul1 extends Thread {
     @Override
     public void run() {
         System.out.println(Thread.currentThread().getName() + " - " + Thread.currentThread().getPriority());
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
            System.out.println("3 x "+ i +"  = " + 3*i);
+            Thread.yield();
         }
 
     }
@@ -21,8 +22,9 @@ class Mul2 extends Thread {
     @Override
     public void run() {
         System.out.println(Thread.currentThread().getName() + " - " + Thread.currentThread().getPriority());
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
            System.out.println("4 x " + i + "  = " + 4*i);
+           Thread.yield();
         }
 
     }
@@ -35,8 +37,9 @@ class Mul3 extends Thread {
     @Override
     public void run() {
         System.out.println(Thread.currentThread().getName() + " - " + Thread.currentThread().getPriority());
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
           System.out.println("5 x " + i + "  = " + 5*i);
+          Thread.yield();
         }
 
     }
@@ -44,7 +47,7 @@ class Mul3 extends Thread {
 
 public class Multiply {
     public static void mul(int n){
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
           System.out.println(n + " x " +i+ "  = " + n*i);
         }
     }
