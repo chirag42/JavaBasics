@@ -47,7 +47,9 @@ class Task2 extends Thread{
 
     @Override
     public void run() {
-        pen.usePenWithPaper(paper);
+        synchronized (paper) {
+            pen.usePenWithPaper(paper);
+        }
     }
 }
 
@@ -62,5 +64,6 @@ public class Deadlock {
         task2.start();
         task1.join();
         task2.join();
+        System.out.println(Thread.currentThread().getName() );
     }
 }
