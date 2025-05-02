@@ -1,4 +1,6 @@
+import javax.swing.tree.TreeCellRenderer;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class StreamsTest {
@@ -112,6 +114,59 @@ public class StreamsTest {
                         Collectors.groupingBy(e -> e.Location, Collectors.averagingDouble(e -> e.salary))));
         System.out.println(mapAgg);
         System.out.println("----------------------------");
+
+
+        // Filter strings that start with A and length > 3
+        List<String> input = Arrays.asList("apple", "ape", "banana", "Ant", "anchor", "art");
+        List<String> result = input.stream().filter(e -> e.length() > 3 && Character.toLowerCase(e.charAt(0)) == 'a')
+                .map(String::toUpperCase)
+                .toList();
+
+        System.out.println(result);
+
+        //You have a list of integers. Return a list of squares of even numbers, sorted in descending order.
+        List<Integer> nums = Arrays.asList(2, 3, 5, 4, 6, 7);
+        List<Integer> evenSquares =  nums.stream().filter(num -> num % 2 == 0).map(num -> num*num)
+                .sorted(Comparator.reverseOrder()).toList();
+        System.out.println(evenSquares);
+
+        //Given a list of strings, return a map where the key is the first character of the string,
+        // and the value is the count of strings starting with that character (case-insensitive).
+
+        List<String> inputStr = Arrays.asList("Apple", "ape", "banana", "Bat", "anchor", "ball");
+        Map<Character, Long> count = inputStr.stream().collect(Collectors.
+                groupingBy(s -> Character.toLowerCase(s.charAt(0)), Collectors.counting()));
+        System.out.println(count);
+
+        //FlatMap
+        List<String> sentences = Arrays.asList(
+                "Java Streams are powerful",
+                "Streams can transform data",
+                "Powerful tools in Java"
+        );
+
+        //Given a list of sentences (strings), return a list of all distinct words, in lowercase, sorted alphabetically.
+        List<String> splitSentences = sentences.stream()
+                .flatMap(s -> Arrays.stream(s.split(" "))).map(String::toLowerCase).distinct().sorted().toList();
+
+        System.out.println(splitSentences);
+
+        //
+        Map<Character, List<String>> mapCharToWord = sentences.stream().flatMap(s -> Arrays.stream(s.split(" ")))
+                .map(String::toLowerCase)
+                .collect(Collectors.groupingBy(str -> str.charAt(0), TreeMap::new,
+                        Collectors.collectingAndThen(Collectors.toSet() , ArrayList::new)));
+
+        System.out.println(mapCharToWord);
+
+        //
+        List<Integer> numbers = Arrays.asList(1, 12, 43, 41, 56, 10);
+
+        Map<Character,Long> chars = numbers.stream().
+                flatMap(num -> String.valueOf(num).chars()
+                        .mapToObj(c -> (char) c))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting() ));
+        System.out.println(chars);
 
 
         //Partition employees based on whether they belong to the 'IT' department or not.
