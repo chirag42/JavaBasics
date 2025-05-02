@@ -17,5 +17,6 @@ public class LambdaExpression {
         t1.start();
         Thread.sleep(100);
         t1.setName("Thread-1");
+
     }
 }
