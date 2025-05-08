@@ -1,7 +1,9 @@
 import javax.swing.tree.TreeCellRenderer;
+import java.security.cert.CertPath;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class StreamsTest {
     public record Employee(int id, String name, double salary, String Location, String department) {}
@@ -123,12 +125,14 @@ public class StreamsTest {
                 .toList();
 
         System.out.println(result);
+        System.out.println("----------------------------");
 
         //You have a list of integers. Return a list of squares of even numbers, sorted in descending order.
         List<Integer> nums = Arrays.asList(2, 3, 5, 4, 6, 7);
         List<Integer> evenSquares =  nums.stream().filter(num -> num % 2 == 0).map(num -> num*num)
                 .sorted(Comparator.reverseOrder()).toList();
         System.out.println(evenSquares);
+        System.out.println("----------------------------");
 
         //Given a list of strings, return a map where the key is the first character of the string,
         // and the value is the count of strings starting with that character (case-insensitive).
@@ -137,6 +141,7 @@ public class StreamsTest {
         Map<Character, Long> count = inputStr.stream().collect(Collectors.
                 groupingBy(s -> Character.toLowerCase(s.charAt(0)), Collectors.counting()));
         System.out.println(count);
+        System.out.println("----------------------------");
 
         //FlatMap
         List<String> sentences = Arrays.asList(
@@ -150,6 +155,7 @@ public class StreamsTest {
                 .flatMap(s -> Arrays.stream(s.split(" "))).map(String::toLowerCase).distinct().sorted().toList();
 
         System.out.println(splitSentences);
+        System.out.println("----------------------------");
 
         //
         Map<Character, List<String>> mapCharToWord = sentences.stream().flatMap(s -> Arrays.stream(s.split(" ")))
@@ -158,20 +164,54 @@ public class StreamsTest {
                         Collectors.collectingAndThen(Collectors.toSet() , ArrayList::new)));
 
         System.out.println(mapCharToWord);
+        System.out.println("----------------------------");
 
-        //
+        // sample questions
         List<Integer> numbers = Arrays.asList(1, 12, 43, 41, 56, 10);
 
+        // Count frequency of digits from List of Numbers.
         Map<Character,Long> chars = numbers.stream().
                 flatMap(num -> String.valueOf(num).chars()
                         .mapToObj(c -> (char) c))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting() ));
         System.out.println(chars);
+        System.out.println("----------------------------");
+
+        // Sum of digits from list of numbers
+        int resultSum = numbers.stream().flatMapToInt(num -> String.valueOf(num).chars().map(c -> c - '0')).sum();
+        System.out.println(resultSum);
+        System.out.println("----------------------------");
+
+        //Find the most frequent digit among all numbers.
+        Character mostFrequent = numbers.stream().flatMap(num -> String.valueOf(num).chars().mapToObj(c -> (char) c))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
+        System.out.println(mostFrequent);
+        System.out.println("----------------------------");
+
+        //List of all even digits from all numbers (no duplicates)
+        List<Integer> numsD = numbers.stream().flatMapToInt(num -> String.valueOf(num).chars().map(c -> c - '0'))
+                .filter(num -> num % 2 == 0)
+                .distinct()
+                .boxed()
+                .toList();
+        System.out.println(numsD);
+        System.out.println("----------------------------");
+
+        //Create a map of number → sum of its digits
+        List<Integer> sumOfIndividualDigits = numbers.stream()
+                .map(num -> String.valueOf(num).chars().map(c -> c - '0').sum())
+                        .toList();
+        System.out.println(sumOfIndividualDigits);
+        System.out.println("----------------------------");
 
 
-        //Partition employees based on whether they belong to the 'IT' department or not.
-        //
-        //Group employees by location, and within that, group by salary brackets (<15, >=15).
+
+
 
 
 
